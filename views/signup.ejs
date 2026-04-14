@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Book My Ticket</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+
+        .container {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007BFF;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .toggle {
+            text-align: center;
+            margin-top: 15px;
+            color: #007BFF;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- SIGNUP FORM -->
+        <div id="signupForm" class="hidden">
+            <h2>Signup</h2>
+            <form action="/auth/signup" method="POST">
+                <input type="text" name="name" placeholder="Enter Name" required />
+                <input type="email" name="email" placeholder="Enter Email" required />
+                <input type="password" name="password" placeholder="Enter Password" required />
+                <button type="submit">Signup</button>
+            </form>
+
+            <div class="toggle" onclick="showLogin()">
+                Already have an account? Login
+            </div>
+            <!-- Go to home -->
+            <div class="toggle" onclick="window.location.href='/'">
+                Back to Home
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showSignup() {
+            window.location.href = '/signup';
+        }
+
+        function showLogin() {
+            window.location.href = '/login';
+        }
+    </script>
+
+</body>
+
+</html>

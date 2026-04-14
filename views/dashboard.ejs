@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book My Ticket || My profile</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    p {
+        color: #555;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<body>
+    <h1>Welcome <%= user.name %>
+    </h1>
+    <p>User ID: <%= user.id %>
+    </p>
+    <p>User E-mail: <%= user.email %>
+    </p>
+
+    <button onclick="window.location.href='/movies'">Book Movie</button>
+
+    <form action="/auth/logout" method="POST">
+        <button>Logout</button>
+    </form>
+</body>
+
+</html>

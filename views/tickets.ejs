@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Book My Ticket</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+
+    .container {
+        height: 100vh;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        /* flex-direction: column; */
+        gap: 50px;
+        justify-content: flex-start;
+        padding: 20px;
+
+        color: white;
+    }
+
+    .container::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 0;
+    }
+
+    .left-container {
+        width: fit-content;
+        width: 800px;
+    }
+
+    .container>* {
+        position: relative;
+        z-index: 1;
+    }
+
+    h2 {
+        margin: 0;
+        font-size: 28px;
+    }
+
+    .seat {
+        padding: 10px;
+        margin: 5px;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .seat:hover {
+        opacity: 0.8;
+    }
+
+    .available {
+        background: green;
+    }
+
+    .booked {
+        background: red;
+        cursor: not-allowed;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    @media screen and (max-width: 768px) {
+        .container {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .left-container,
+        .tickets-container {
+            width: 100%;
+        }
+    }
+</style>
+
+<body>
+
+    <h1>🎬 Available Movies seats</h1>
+
+    <div class="container" style="background-image: url('<%= movie.Images[1] %>')">
+        <div class="left-container">
+            <h2 data-movieId="<%= movie.id %>">
+                <%= movie.Title %>
+            </h2>
+            <p>
+                Select your seats for <span>
+                    <%= formattedDate %>
+                </span>
+            </p>
+            <img src="<%= movie.Images[0] %>" alt="<%= movie.Title %>"
+                style="width:200px; height:auto; border-radius:5px;">
+            <p>Show time
+            </p>
+            <b class="time">1:45 PM</b>
+        </div>
+        <div class="tickets-container">
+            <p>Price per ticket: $5
+            </p>
+
+            <div class="seats">
+                <% seats.forEach(seat=> { %>
+                    <div class="seat <%= seat.is_booked ? 'booked' : 'available' %>" data-id="<%= seat.id %>">
+                        <%= seat.seat_number %>
+                    </div>
+                    <% }) %>
+            </div>
+
+        </div>
+
+    </div>
+    <!--Back slace button-->
+    <button onclick="window.location.href='/auth/me'">Back to Dashboard</button>
+
+    <script>
+
+        document.querySelector('.seats').addEventListener('click', (e) => {
+            if (e.target.classList.contains('available')) {
+                const seatId = e.target.dataset.id;
+                // console.log(seatId);
+                const movieId = document.querySelector('h2').dataset.movieid;
+                if (confirm('Are you sure you want to book this seat?')) {
+                    fetch('/auth/booking-proccess', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+
+
+                        body: JSON.stringify({ seat_id: seatId, movie_id: movieId, show_date: '<%= formattedDate %>' })
+                    }).then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Seat booked successfully!');
+                                e.target.classList.remove('available');
+                                e.target.classList.add('booked');
+                                e.target.style.cursor = 'not-allowed';
+                            } else {
+                                alert('Seat already booked. Please select another seat.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('An error occurred. Please try again.')
+                        });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
