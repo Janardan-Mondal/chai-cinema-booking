@@ -9,19 +9,13 @@ export const signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
-            return res.status(400).json({
-                success: false,
-                message: "Name, email and password are required"
-            });
+            return res.status(400).redirect("/signup?error=Name, email and password are required");    
         }
 
         //check if user exists in database
         const userResult = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
         if (userResult.rows.length > 0) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid email or password"
-            });
+            return res.status(401).redirect("/signup?error=User with this email already exists");
         }
 
         //hashed password 
@@ -34,11 +28,7 @@ export const signup = async (req, res) => {
         //redirect to login page
         res.status(200).redirect("/login");
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "An error occurred during sign up",
-            error: error.message
-        });
+        res.status(500).redirect("/signup?error=An error occurred during signup");
     }
 }
 
@@ -47,10 +37,7 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(400).json({
-                success: false,
-                message: "Email and password are required"
-            });
+            return res.status(400).redirect("/login?error=Email and password are required");
         }
 
         //check if user exists in database
@@ -74,7 +61,7 @@ export const login = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "lax", // Adjust as needed (e.g., "strict" or "none" if cross-site)
+            sameSite: "lax", 
             maxAge: 60 * 60 * 1000 // 1 hour
         })
 
