@@ -43,6 +43,23 @@
     </p>
     <p>User E-mail: <%= user.email %>
     </p>
+ 
+<div class="bookings">
+        <h2>Your Booking History</h2>
+        <% if (bookingResult.length === 0) { %>
+            <p>No bookings found.</p>
+        <% } else { %>
+            <ul>
+                <% bookingResult.forEach(booking => { %>
+                    <li>
+                        <strong>Movie:</strong> <%= booking.movie_name %><br>
+                        <strong>Show Date:</strong> <%= booking.show_date %><br>
+                        <strong>Seats:</strong> <%= booking.seats.join(', ') %><br>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </div>
 
     <button onclick="window.location.href='/movies'">Book Movie</button>
 
