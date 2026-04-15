@@ -6,6 +6,8 @@ In this webapp I create a Cinema seat booking system with express, bcrypt, jsonw
 * There are **users**, **seats** and **bookings** table available in postgressSQL
 * The movies are static (that data fetching from movies.json file)
 
+Visit my booking app -> https://chai-cinema-booking.vercel.app/
+
 ## Folder Structure
 * The main folders 
 ![The main folders](./src/assets/main-folders.png)
