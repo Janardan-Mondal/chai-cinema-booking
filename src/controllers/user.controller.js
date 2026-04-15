@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { getPool } from "../db/db.js";
 
 
-const { pool } = await import("../db/db.js");
+const pool = getPool();
 
 export const signup = async (req, res) => {
     try {
@@ -103,8 +104,6 @@ export const me = async (req, res) => {
         res.status(500).redirect("/login?error=An error occurred while fetching user data");
     }
 }
-
-
 
 
 //logout function

@@ -1,12 +1,17 @@
 // movies controller
 import fs from "fs";
-import { pool } from "../db/db.js";
+import { getPool } from "../db/db.js";
 import { formattedDate } from "../assets/date.js";
+import path from "path";
 
+const pool = getPool();
 
 // read JSON file
 const movies = JSON.parse(
-    fs.readFileSync("./src/assets/movies.json")
+    fs.readFileSync(
+        path.join(process.cwd(), "src/assets/movies.json"),
+        "utf-8"
+    )
 );
 
 export const movie = async (req, res) => {
