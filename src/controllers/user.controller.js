@@ -36,7 +36,7 @@ export const signup = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: "An error occurred during login",
+            message: "An error occurred during sign up",
             error: error.message
         });
     }
