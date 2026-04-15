@@ -95,10 +95,24 @@ export const me = async (req, res) => {
             return res.status(404).redirect("404");
         }
 
+        // booking movies 
+        const bookingResult = await pool.query(`
+        SELECT 
+            b.id AS booking_id,
+            m.name AS movie_name,
+            b.show_date,
+            array_agg(s.seat_number) AS seats
+        FROM bookings b
+        JOIN movies m ON b.movie_id = m.id
+        JOIN seats s ON b.seat_id = s.id
+        WHERE b.user_id = $1
+        GROUP BY b.id, m.name, b.show_date
+        `, [userId]);
+
         const user = userResult.rows[0];
 
         res.status(200).render("dashboard", {
-            user
+            user, bookingResult
         });
     } catch (error) {
         res.status(500).redirect("/login?error=An error occurred while fetching user data");
@@ -110,7 +124,7 @@ export const me = async (req, res) => {
 export const logout = (req, res) => {
     // Clear the token from the client side by clearing the cookie
     res.clearCookie("token", {
-        httpOnly: true,
+        httpOnly: true, bookingResult
         secure: process.env.NODE_ENV === "production",
     });
 
