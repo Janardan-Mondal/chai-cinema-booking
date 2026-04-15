@@ -111,7 +111,7 @@ export const me = async (req, res) => {
 export const logout = (req, res) => {
     // Clear the token from the client side by clearing the cookie
     res.clearCookie("token", {
-        httpOnly: true, bookingResult
+        httpOnly: true,
         secure: process.env.NODE_ENV === "production",
     });
 
